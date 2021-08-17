@@ -28,14 +28,14 @@ if(isset($_POST['register']) == 'POST'){
   }
 
   if(empty($password2)){
-    $password_err = 'Confirm password is required';
+    $password2_err = 'Confirm password is required';
   }
 
   if($password !== $password2){
-    $password2_err = 'Passwords do not match';
+    $passwordMatch_err = 'Passwords do not match';
   }
 
-  if(!$username_err && !$email_err && !$password_err && !$password2_err){
+  if(!isset($username_err) && !isset($email_err) && !isset($password_err) && !isset($password2_err)){
       try{
       $select_stmt = $db->prepare("SELECT email FROM users WHERE email=:email");
       $select_stmt->execute(array(':email'=>$email));
@@ -52,6 +52,7 @@ if(isset($_POST['register']) == 'POST'){
         $result = $insert_stmt->execute($values);
         $_SESSION['message'] = 'Successfully registered.';
         $_SESSION['msg_type'] = 'success';
+        // header('refresh:2; login.php');
         header('location: login.php'); 
       } else {
         $_SESSION['message'] = 'Registeration failed. Try again';
@@ -71,6 +72,17 @@ if(isset($_POST['register']) == 'POST'){
 
 <?php require_once 'includes/header.php'; ?>
 <div class="container theme-showcase col-sm-6 col-sm-offset-3" role="main">
+  <!--SESSION MESSAGE-->
+  <?php if(isset($_SESSION['message'])): ?>
+  <div class="my-1">
+    <div class="alert alert-<?=$_SESSION['msg_type']?>">
+      <?php
+        echo $_SESSION['message'];
+        unset($_SESSION['message']);
+      ?>
+    </div>
+  </div>
+  <?php endif; ?>
   <div class="row">
     <div>
       <div class="panel panel-primary">
@@ -83,19 +95,24 @@ if(isset($_POST['register']) == 'POST'){
             <div class="form-group">
               <label for="username">Username</label>
               <input type="text" class="form-control" id="username" name="username" placeholder="Username" />
+              <?php echo isset($username_err)?"<span class='text-danger'>{$username_err}</span>":"" ?>
             </div>
             <div class="form-group">
               <label for="email">Email</label>
               <input type="email" class="form-control" id="email" name="email" placeholder="Email" />
+              <?php echo isset($email_err)?"<span class='text-danger'>{$email_err}</span>":"" ?>
             </div>
             <div class="form-group">
               <label for="password">Password</label>
               <input type="password" name="password" class="form-control" id="password" placeholder="Password" />
+              <?php echo isset($password_err)?"<span class='text-danger'>{$password_err}</span>":"" ?>
             </div>
             <div class="form-group">
               <label for="password2">Confirm Password</label>
               <input type="password" name="password2" class="form-control" id="password2"
                 placeholder="Confirm Password" />
+              <?php echo isset($password2_err)?"<span class='text-danger'>{$password2_err}</span>":"" ?>
+              <?php echo isset($passwordMatch_err)?"<span class='text-danger'>{$passwordMatch_err}</span>":"" ?>
             </div>
             <button type="submit" class="btn btn-primary" name="register">Submit</button>
           </form>
