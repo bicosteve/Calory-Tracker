@@ -1,3 +1,4 @@
+<?php $currentPage = 'Day';?>
 <?php require_once 'includes/header.php'; ?>
 <div class="container theme-showcase col-sm-6 col-sm-offset-3" role="main">
   <div class="row">

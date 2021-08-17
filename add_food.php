@@ -1,4 +1,4 @@
-<?php //git push -u origin master ?>
+<?php $currentPage = 'Add Food'; //git push -u origin master ?>
 
 <?php require_once 'includes/header.php'; ?>
 <div class="container theme-showcase col-sm-6 col-sm-offset-3" role="main">
@@ -11,6 +11,10 @@
 
         <div class="panel-body">
           <form method="POST" action="/">
+            <div class="form-group">
+              <label for="food-name">Day</label>
+              <input type="date" class="form-control" id="food-name" placeholder="Food Name" />
+            </div>
             <div class="form-group">
               <label for="food-name">Food Name</label>
               <input type="text" class="form-control" id="food-name" placeholder="Food Name" />
