@@ -52,8 +52,7 @@ if(isset($_POST['register']) == 'POST'){
         $result = $insert_stmt->execute($values);
         $_SESSION['message'] = 'Successfully registered.';
         $_SESSION['msg_type'] = 'success';
-        // header('refresh:2; login.php');
-        header('location: login.php'); 
+        header('refresh:2; login.php'); 
       } else {
         $_SESSION['message'] = 'Registeration failed. Try again';
         $_SESSION['msg_type'] = 'warning';
@@ -63,24 +62,18 @@ if(isset($_POST['register']) == 'POST'){
       if(isset($error)){echo 'Error'.$error;}
     }
   }
-
 }
 ?>
-
-
-
 
 <?php require_once 'includes/header.php'; ?>
 <div class="container theme-showcase col-sm-6 col-sm-offset-3" role="main">
   <!--SESSION MESSAGE-->
   <?php if(isset($_SESSION['message'])): ?>
-  <div class="my-1">
-    <div class="alert alert-<?=$_SESSION['msg_type']?>">
-      <?php
+  <div class="alert alert-<?=$_SESSION['msg_type']?>">
+    <?php
         echo $_SESSION['message'];
         unset($_SESSION['message']);
       ?>
-    </div>
   </div>
   <?php endif; ?>
   <div class="row">

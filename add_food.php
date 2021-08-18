@@ -8,10 +8,11 @@ if(isset($_POST['add_food']) == 'POST'){
 
   $day = trim($_POST['day']);
   $food_name = trim($_POST['food-name']);
-  $protein = trim($_POST['protein']);
-  $carbohydrates = trim($_POST['carbohydrates']);
-  $fat = trim($_POST['fat']);
+  $protein = (int) trim($_POST['protein']);
+  $carbohydrates = (int) trim($_POST['carbohydrates']);
+  $fat = (int) trim($_POST['fat']);
   $userid = (int) $_SESSION['userid'];
+  $calory = $protein * $carbohydrates * $fat;
 
   if(empty($day)){
     $day_err = 'This field is required';
@@ -43,10 +44,10 @@ if(isset($_POST['add_food']) == 'POST'){
 
   if(!isset($day_err) && !isset($food_err) && !isset($protein_err) && !isset($carbohydrates_err) && !isset($fat_err)){
     try{
-      $sql = "INSERT INTO foods(food_name,protein,carbohydrates,fat,userid,day) VALUES(:food_name,:protein,:carbohydrates,:fat,:userid,:day)";
+      $sql = "INSERT INTO foods(food_name,protein,cabohydrates,fat,userid,day,calory) VALUES(:food_name,:protein,:cabohydrates,:fat,:userid,:day, :calory)";
       
       $insert_stmt = $db->prepare($sql);
-      $values = [':food_name'=>$food_name,':protein'=>$protein,':carbohydrates'=>$carbohydrates,':fat'=>$fat,':userid'=>$userid,':day'=>$day];
+      $values = [':food_name'=>$food_name,':protein'=>$protein,':cabohydrates'=>$carbohydrates,':fat'=>$fat,':userid'=>$userid,':day'=>$day,':calory'=>$calory];
       $result = $insert_stmt->execute($values);
       
       if(!$result){
@@ -69,21 +70,17 @@ if(isset($_POST['add_food']) == 'POST'){
 ?>
 
 <?php require_once 'includes/header.php'; ?>
-
 <div class="container theme-showcase col-sm-6 col-sm-offset-3" role="main">
   <!--SESSION MESSAGE-->
   <?php if(isset($_SESSION['message'])): ?>
-  <div class="my-1">
-    <div class="alert alert-<?=$_SESSION['msg_type']?>">
-      <?php
+  <div class="alert alert-<?=$_SESSION['msg_type']?>">
+    <?php
         echo $_SESSION['message'];
         unset($_SESSION['message']);
       ?>
-    </div>
   </div>
   <?php endif; ?>
-
-  <div class="row">
+  <div class="row mt-2">
     <div>
       <div class="panel panel-primary">
         <div class="panel-heading">
@@ -95,23 +92,28 @@ if(isset($_POST['add_food']) == 'POST'){
             <div class="form-group">
               <label for="day">Day</label>
               <input type="date" class="form-control" id="day" name="day" placeholder="Day" />
+              <?php echo isset($day_err)?"<span class='text-danger'>{$day_err}</span>":"" ?>
             </div>
             <div class="form-group">
               <label for="food-name">Food Name</label>
-              <input type="text" class="form-control" id="food-name" placeholder="Food Name" />
+              <input type="text" class="form-control" name="food-name" id="food-name" placeholder="Food Name" />
+              <?php echo isset($food_err)?"<span class='text-danger'>{$food_err}</span>":"" ?>
             </div>
             <div class="form-group">
               <label for="protein">Protein</label>
               <input type="number" class="form-control" name="protein" id="protein" placeholder="Protein" />
+              <?php echo isset($protein_err)?"<span class='text-danger'>{$protein_err}</span>":"" ?>
             </div>
             <div class="form-group">
               <label for="carbohydrates">Carbohydrates</label>
               <input name="carbohydrates" type="number" class="form-control" id="carbohydrates"
                 placeholder="Carbohydrates" />
+              <?php echo isset($carbohydrates_err)?"<span class='text-danger'>{$carbohydrates_err}</span>":"" ?>
             </div>
             <div class="form-group">
               <label for="fat">Fat</label>
               <input name="fat" type="number" class="form-control" id="fat" placeholder="Fat" />
+              <?php echo isset($fat_err)?"<span class='text-danger'>{$fat_err}</span>":"" ?>
             </div>
             <button type="submit" class="btn btn-primary" name="add_food">Add</button>
           </form>

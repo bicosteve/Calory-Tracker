@@ -1,16 +1,20 @@
 <?php $currentPage = 'Home';?>
+<?php 
+session_start();
+?>
+
 <?php require_once 'includes/header.php'; ?>
 <div class="container theme-showcase col-sm-6 col-sm-offset-3" role="main">
   <div class="row">
     <div>
-      <!-- <form method="POST" action="/">
+      <form method="POST" action="/">
         <div class="form-group">
           <label for="new-day">New Day</label>
           <input type="date" class="form-control" id="new-day" />
         </div>
 
         <button type="submit" class="btn btn-primary">Add</button>
-      </form> -->
+      </form>
 
       <div class="page-header"></div>
 

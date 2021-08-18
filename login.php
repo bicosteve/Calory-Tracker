@@ -35,12 +35,12 @@ if(isset($_POST['login']) == 'POST'){
 
     if(!isset($user_err)){
       if($email == $row['email'] && password_verify($password,$row['password'])){
-        session_start();
+        // session_start();
         $_SESSION['userid'] = $row['userid'];
         $_SESSION['username'] = $row['username'];
         $_SESSION['message'] = 'You are successfully logged in';
         $_SESSION['msg_type'] = 'success';
-        header('location: add_food.php');
+        header('refresh:2; add_food.php');
       } else {
         $loggin_err = 'Your password and email do not match.';
         $_SESSION['message'] = 'Login failed. Try again';
@@ -48,9 +48,7 @@ if(isset($_POST['login']) == 'POST'){
       }
       
     }
-
   }
-
 }
 
 ?>

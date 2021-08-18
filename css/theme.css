@@ -13,6 +13,11 @@ body {
   margin: 5px 0;
 }
 
+.messages {
+  max-width: 60%;
+  margin: 0 auto;
+}
+
 /* .theme-showcase .navbar .container {
   width: auto;
 } */

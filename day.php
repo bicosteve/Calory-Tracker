@@ -1,6 +1,23 @@
 <?php $currentPage = 'Day';?>
+<?php
+
+session_start();
+
+
+?>
+
+
 <?php require_once 'includes/header.php'; ?>
 <div class="container theme-showcase col-sm-6 col-sm-offset-3" role="main">
+  <!--SESSION MESSAGE-->
+  <?php if(isset($_SESSION['message'])): ?>
+  <div class="alert alert-<?=$_SESSION['msg_type']?>">
+    <?php
+        echo $_SESSION['message'];
+        unset($_SESSION['message']);
+      ?>
+  </div>
+  <?php endif; ?>
   <div class="row">
     <div>
       <div class="panel panel-primary">
