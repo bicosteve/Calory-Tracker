@@ -18,6 +18,14 @@ body {
   margin: 0 auto;
 }
 
+th {
+  text-align: center;
+}
+
+td {
+  text-align: center;
+}
+
 /* .theme-showcase .navbar .container {
   width: auto;
 } */

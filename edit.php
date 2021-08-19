@@ -4,14 +4,25 @@ require_once 'includes/db.php';
 
 session_start();
 
-if(isset($_POST['add_food']) == 'POST'){
 
+if(isset($_GET['edit'])){
+    $foodid = (int) trim($_GET['edit']);
+    $sql = "SELECT * FROM foods WHERE foodid=:foodid";
+    $selectfood = $db->prepare($sql);
+    $value = [':foodid'=>$foodid];
+    $selectfood->execute($value);
+    $row = $selectfood->fetch(PDO::FETCH_ASSOC);
+}
+
+
+if(isset($_POST['update']) == 'POST'){
   $day = trim($_POST['day']);
   $food_name = trim($_POST['food-name']);
   $protein = (int) trim($_POST['protein']);
   $carbohydrates = (int) trim($_POST['carbohydrates']);
   $fat = (int) trim($_POST['fat']);
   $userid = (int) $_SESSION['userid'];
+  $foodid = (int) trim($_POST['foodid']);
   
 
   if(empty($day)){
@@ -44,29 +55,24 @@ if(isset($_POST['add_food']) == 'POST'){
 
   //calculating food calories
   $calory = $protein * $carbohydrates * $fat;
-
-  if(!isset($day_err) && !isset($food_err) && !isset($protein_err) && !isset($carbohydrates_err) && !isset($fat_err)){
-    try{
-      $sql = "INSERT INTO foods(food_name,protein,cabohydrates,fat,userid,day,calory) VALUES(:food_name,:protein,:cabohydrates,:fat,:userid,:day, :calory)";
-      
-      $insert_stmt = $db->prepare($sql);
-      $values = [':food_name'=>$food_name,':protein'=>$protein,':cabohydrates'=>$carbohydrates,':fat'=>$fat,':userid'=>$userid,':day'=>$day,':calory'=>$calory];
-      $result = $insert_stmt->execute($values);
-      
-      if(!$result){
-        $db_err = 'Failed to submit';
-        $_SESSION['message'] = 'Submission unsuccessful';
-        $_SESSION['msg_type'] = 'danger';
-      } else{
-        $_SESSION['message'] = 'Successfully submited';
-        $_SESSION['msg_type'] = 'success';
-        header('refresh:2; home.php');
-      }
-      
-    }catch(Exception $er){
-      echo $er->getMessage();
+  try{
+    $sql = "UPDATE foods SET food_name=:food_name,protein=:protein,cabohydrates=:cabohydrates,fat=:fat,userid=:userid,day=:day,calory=:calory WHERE foodid=:foodid";
+    $update_stmt = $db->prepare($sql);
+    $values = [':food_name'=>$food_name,':protein'=>$protein,':cabohydrates'=>$carbohydrates,':fat'=>$fat,':userid'=>$userid,':day'=>$day,':calory'=>$calory,':foodid'=>$foodid];
+    $result = $update_stmt->execute($values);
+    
+    if(!$result){
+      $db_err = 'Failed to update';
+      $_SESSION['message'] = 'Submission unsuccessful';
+      $_SESSION['msg_type'] = 'danger';
+    } else{
+      $_SESSION['message'] = 'Successfully updated';
+      $_SESSION['msg_type'] = 'success';
+      header('refresh:1; home.php');
     }
-
+    
+  }catch(Exception $er){
+    echo $er->getMessage();
   }
 }
 
@@ -91,35 +97,39 @@ if(isset($_POST['add_food']) == 'POST'){
         </div>
 
         <div class="panel-body">
-          <form method="POST" action="add_food.php">
+          <form method="POST" action="edit.php">
+            <input type="hidden" name="foodid" value="<?php echo $row['foodid'] ?>">
             <div class="form-group">
               <label for="day">Day</label>
-              <input type="date" class="form-control" id="day" name="day" placeholder="Day" />
+              <input type="date" class="form-control" id="day" name="day" value="<?php echo $row['day']; ?>" />
               <?php echo isset($day_err)?"<span class='text-danger'>{$day_err}</span>":"" ?>
             </div>
             <div class="form-group">
               <label for="food-name">Food Name</label>
-              <input type="text" class="form-control" name="food-name" id="food-name" placeholder="Food Name" />
+              <input type="text" class="form-control" name="food-name" id="food-name"
+                value="<?php echo $row['food_name']; ?>" />
               <?php echo isset($food_err)?"<span class='text-danger'>{$food_err}</span>":"" ?>
             </div>
             <div class="form-group">
               <label for="protein">Protein</label>
-              <input type="number" class="form-control" name="protein" id="protein" placeholder="Protein" />
+              <input type="number" class="form-control" name="protein" id="protein"
+                value="<?php echo $row['protein']; ?>" />
               <?php echo isset($protein_err)?"<span class='text-danger'>{$protein_err}</span>":"" ?>
             </div>
             <div class="form-group">
               <label for="carbohydrates">Carbohydrates</label>
               <input name="carbohydrates" type="number" class="form-control" id="carbohydrates"
-                placeholder="Carbohydrates" />
+                value="<?php echo $row['cabohydrates']; ?>" />
               <?php echo isset($carbohydrates_err)?"<span class='text-danger'>{$carbohydrates_err}</span>":"" ?>
             </div>
             <div class="form-group">
               <label for="fat">Fat</label>
-              <input name="fat" type="number" class="form-control" id="fat" placeholder="Fat" />
+              <input name="fat" type="number" class="form-control" id="fat" value="<?php echo $row['fat']; ?>" />
               <?php echo isset($fat_err)?"<span class='text-danger'>{$fat_err}</span>":"" ?>
             </div>
-            <button type="submit" class="btn btn-primary" name="add_food">Add</button>
+            <button type="submit" class="btn btn-primary" name="update">Update</button>
           </form>
+
           <div class="page-header"></div>
         </div>
       </div>
