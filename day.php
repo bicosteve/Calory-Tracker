@@ -3,9 +3,9 @@
 
 require_once 'includes/db.php';
 session_start();
-if(!isset($_SESSION['username'])){
-  header('location: login.php');
-}
+// if(!isset($_SESSION['username'])){
+//   header('location: login.php');
+// }
 
 $userid = (int) $_SESSION['userid'];
 $results = $db->query("SELECT day FROM foods WHERE userid=$userid");
@@ -16,7 +16,7 @@ if(isset($_POST['search']) == 'POST'){
   $day = trim($_POST['day']);
   $foods = $db->query("SELECT * FROM foods WHERE day='$day'");
   
-  //totals
+  //sub totals
   $totals = $db->query("SELECT SUM(calory) AS cals, SUM(protein) AS proteins, SUM(cabohydrates) AS cabs, SUM(fat) AS fats FROM foods WHERE day='$day'"); 
 } 
 

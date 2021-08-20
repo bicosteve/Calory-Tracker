@@ -1,9 +1,9 @@
 <?php $currentPage = 'Add Food'; //git push -u origin master ?>
 <?php
 require_once 'includes/db.php';
-if(!isset($_SESSION['username'])){
-  header('location: login.php');
-}
+// if(!isset($_SESSION['username'])){
+//   header('location: login.php');
+// }
 
 session_start();
 
@@ -58,7 +58,8 @@ if(isset($_POST['update']) == 'POST'){
 
   //calculating food calories
   $calory = $protein * $carbohydrates * $fat;
-  try{
+  if(!isset($day_err) && !isset($food_err) && !isset($protein_err) && !isset($carbohydrates_err) && !isset($fat_err)){
+    try{
     $sql = "UPDATE foods SET food_name=:food_name,protein=:protein,cabohydrates=:cabohydrates,fat=:fat,userid=:userid,day=:day,calory=:calory WHERE foodid=:foodid";
     $update_stmt = $db->prepare($sql);
     $values = [':food_name'=>$food_name,':protein'=>$protein,':cabohydrates'=>$carbohydrates,':fat'=>$fat,':userid'=>$userid,':day'=>$day,':calory'=>$calory,':foodid'=>$foodid];
@@ -77,6 +78,7 @@ if(isset($_POST['update']) == 'POST'){
   }catch(Exception $er){
     echo $er->getMessage();
   }
+  } 
 }
 
 ?>
