@@ -19,7 +19,7 @@
   <nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container">
       <div class="navbar-header">
-        <a class="navbar-brand" href="#">Food Tracker</a>
+        <a class="navbar-brand" href="#">Calory Tracker</a>
       </div>
       <div id="navbar" class="navbar-collapse collapse">
         <ul class="nav navbar-nav mr-auto">
@@ -32,6 +32,11 @@
         </ul>
         <ul class="nav navbar-nav navbar-right">
           <?php if(isset($_SESSION['username'])): ?>
+          <?php
+             $name = $_SESSION['username'];
+             $name = ucfirst($name);
+             ?>
+          <li class="nav-item active"><a href="#"><?php echo "Hi, ".$name; ?></a></li>
           <li class="nav-item"><a href="logout.php">Logout</a></li>
           <?php else: ?>
           <li class="nav-item"><a href="login.php">Login</a></li>

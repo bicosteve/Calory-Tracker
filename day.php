@@ -3,16 +3,22 @@
 
 require_once 'includes/db.php';
 session_start();
-
-if(isset($_POST['search']) == 'POST'){
-  $day = trim($_POST['day']);
-  $foods = $db->query("SELECT * FROM foods WHERE day='$day'"); 
+if(!isset($_SESSION['username'])){
+  header('location: login.php');
 }
 
 $userid = (int) $_SESSION['userid'];
 $results = $db->query("SELECT day FROM foods WHERE userid=$userid");
-
 $foodNumber = 0;
+
+
+if(isset($_POST['search']) == 'POST'){
+  $day = trim($_POST['day']);
+  $foods = $db->query("SELECT * FROM foods WHERE day='$day'");
+  
+  //totals
+  $totals = $db->query("SELECT SUM(calory) AS cals, SUM(protein) AS proteins, SUM(cabohydrates) AS cabs, SUM(fat) AS fats FROM foods WHERE day='$day'"); 
+} 
 
 ?>
 
@@ -50,27 +56,33 @@ $foodNumber = 0;
 
           <div class="page-header"></div>
 
+          <?php if(!isset($_POST['search']) == 'POST'): ?>
+          <p class="text-center">Nothing to see here yet!</p>
+          <?php else: ?>
+          <?php while($row = $totals->fetch(PDO::FETCH_ASSOC)): ?>
           <ul class="nav nav-pills" role="tablist">
             <li class="active"><a>Total</a></li>
             <li>
-              <a>Protein: <span class="badge">100</span></a>
+              <a>Protein: <span class="badge"><?php echo $row['proteins']; ?></span></a>
             </li>
             <li>
-              <a>Carbohydates: <span class="badge">200</span></a>
+              <a>Carbohydates: <span class="badge"><?php echo $row['cabs']; ?></span></a>
             </li>
             <li>
-              <a>Fat: <span class="badge">50</span></a>
+              <a>Fat: <span class="badge"><?php echo $row['fats']; ?></span></a>
             </li>
             <li>
-              <a>Calories: <span class="badge">1650</span></a>
+              <a>Calories: <span class="badge"><?php echo $row['cals']; ?></span></a>
             </li>
           </ul>
+          <?php endwhile; ?>
+          <?php endif; ?>
         </div>
 
         <div class="page-header"></div>
         <div class="panel-body">
-          <?php if(!$foods): ?>
-          <p>Please make your search.</p>
+          <?php if(!isset($_POST['search']) == 'POST'): ?>
+          <p class="text-center">Please make a filter by date.</p>
           <?php else: ?>
           <?php while( $food = $foods->fetch(PDO::FETCH_ASSOC)): ?>
           <table class="table table-hover">

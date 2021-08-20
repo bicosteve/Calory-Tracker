@@ -4,6 +4,10 @@ require_once 'includes/db.php';
 
 session_start();
 
+if(!isset($_SESSION['username'])){
+  header('location: login.php');
+}
+
 if(isset($_POST['add_food']) == 'POST'){
 
   $day = trim($_POST['day']);
@@ -60,7 +64,7 @@ if(isset($_POST['add_food']) == 'POST'){
       } else{
         $_SESSION['message'] = 'Successfully submited';
         $_SESSION['msg_type'] = 'success';
-        header('refresh:2; home.php');
+        header('refresh:1; home.php');
       }
       
     }catch(Exception $er){

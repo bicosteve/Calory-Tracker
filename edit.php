@@ -1,6 +1,9 @@
 <?php $currentPage = 'Add Food'; //git push -u origin master ?>
 <?php
 require_once 'includes/db.php';
+if(!isset($_SESSION['username'])){
+  header('location: login.php');
+}
 
 session_start();
 
@@ -68,7 +71,7 @@ if(isset($_POST['update']) == 'POST'){
     } else{
       $_SESSION['message'] = 'Successfully updated';
       $_SESSION['msg_type'] = 'success';
-      header('refresh:1; home.php');
+      header('location: home.php');
     }
     
   }catch(Exception $er){
