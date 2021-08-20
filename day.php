@@ -3,9 +3,9 @@
 
 require_once 'includes/db.php';
 session_start();
-// if(!isset($_SESSION['username'])){
-//   header('location: login.php');
-// }
+if(!isset($_SESSION['username'])){
+  header('location: login.php');
+}
 
 $userid = (int) $_SESSION['userid'];
 $results = $db->query("SELECT day FROM foods WHERE userid=$userid");

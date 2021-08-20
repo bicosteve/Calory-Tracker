@@ -1,9 +1,9 @@
 <?php $currentPage = 'Add Food'; //git push -u origin master ?>
 <?php
 require_once 'includes/db.php';
-// if(!isset($_SESSION['username'])){
-//   header('location: login.php');
-// }
+if(!isset($_SESSION['username'])){
+  header('location: login.php');
+}
 
 session_start();
 
