@@ -1,4 +1,4 @@
-<?php $currentPage = 'Add Food'; //git push -u origin master ?>
+<?php $currentPage = 'Add Food';  ?>
 <?php
 require_once 'includes/db.php';
 

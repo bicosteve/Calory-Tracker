@@ -40,7 +40,7 @@ if(isset($_POST['login']) == 'POST'){
         $_SESSION['username'] = $row['username'];
         $_SESSION['message'] = 'You are successfully logged in';
         $_SESSION['msg_type'] = 'success';
-        header('refresh:1; add_food.php');
+        header('refresh:0.5; add_food.php');
       } else {
         $loggin_err = 'Your password and email do not match.';
         $_SESSION['message'] = 'Login failed. Try again';

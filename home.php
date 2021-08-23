@@ -38,7 +38,7 @@ $result = $db->query("SELECT * FROM foods ORDER BY foodid DESC LIMIT 1");
               <a>Calories: <span class="badge"><?php echo $row['calory'] ?></span></a>
             </li>
             <li>
-              <a href="day.php" type="button" class="btn btn-link">View Detail</a>
+              <a href="day.php" type="button" class="btn btn-primary btn-link">View Detail</a>
             </li>
           </ul>
         </div>

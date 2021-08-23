@@ -2,6 +2,7 @@
 
 <?php 
 require_once 'includes/db.php';
+
 session_start();
 
 if(isset($_SESSION['username'])){
@@ -9,12 +10,13 @@ if(isset($_SESSION['username'])){
 }
 
 if(isset($_POST['register']) == 'POST'){
-  
+
   $username = trim($_POST['username']);
   $email = trim($_POST['email']);
   $password = trim($_POST['password']);
   $password2 = trim($_POST['password2']);
 
+ 
   if(empty($username)){
     $username_err ='Username is required';
   } elseif(!preg_match('/^[a-zA-Z0-9]*$/',$username)){

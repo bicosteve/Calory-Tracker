@@ -1,85 +1,22 @@
-<?php $currentPage = 'Add Food'; //git push -u origin master ?>
+<?php $currentPage = 'Add Food';  ?>
 <?php
+
 require_once 'includes/db.php';
+require_once 'update.php';
+
 if(!isset($_SESSION['username'])){
   header('location: login.php');
+  exit();
 }
-
-session_start();
 
 
 if(isset($_GET['edit'])){
-    $foodid = (int) trim($_GET['edit']);
-    $sql = "SELECT * FROM foods WHERE foodid=:foodid";
-    $selectfood = $db->prepare($sql);
-    $value = [':foodid'=>$foodid];
-    $selectfood->execute($value);
+    $foodid = (int) $_GET['edit'];
+    $selectfood = $db->prepare("SELECT * FROM foods WHERE foodid=:foodid");
+    $selectfood->execute([':foodid'=>$foodid]);
     $row = $selectfood->fetch(PDO::FETCH_ASSOC);
 }
 
-
-if(isset($_POST['update']) == 'POST'){
-  $day = trim($_POST['day']);
-  $food_name = trim($_POST['food-name']);
-  $protein = (int) trim($_POST['protein']);
-  $carbohydrates = (int) trim($_POST['carbohydrates']);
-  $fat = (int) trim($_POST['fat']);
-  $userid = (int) $_SESSION['userid'];
-  $foodid = (int) trim($_POST['foodid']);
-  
-
-  if(empty($day)){
-    $day_err = 'This field is required';
-  } 
-
-  if(empty($food_name)){
-    $food_err = 'This field is required';
-  } else if(!preg_match('/^[a-zA-Z]*$/',$food_name)){
-    $food_err = 'This field can only be letters';
-  }
-
-  if(empty($protein)){
-    $protein_err = 'This field is required';
-  } else if(!preg_match('/^[0-9]*$/',$protein)){
-    $protein_err = 'This field only take digits';
-  }
-
-  if(empty($carbohydrates)){
-    $carbohydrates_err = 'This field is required';
-  } else if(!preg_match('/^[0-9]*$/',$carbohydrates)){
-    $carbohydrates_err = 'This field only take digits';
-  }
-
-   if(empty($fat)){
-    $fat_err = 'This field is required';
-  } else if(!preg_match('/^[0-9]*$/',$fat)){
-    $fat_err = 'This field only take digits';
-  }
-
-  //calculating food calories
-  $calory = $protein * $carbohydrates * $fat;
-  if(!isset($day_err) && !isset($food_err) && !isset($protein_err) && !isset($carbohydrates_err) && !isset($fat_err)){
-    try{
-    $sql = "UPDATE foods SET food_name=:food_name,protein=:protein,cabohydrates=:cabohydrates,fat=:fat,userid=:userid,day=:day,calory=:calory WHERE foodid=:foodid";
-    $update_stmt = $db->prepare($sql);
-    $values = [':food_name'=>$food_name,':protein'=>$protein,':cabohydrates'=>$carbohydrates,':fat'=>$fat,':userid'=>$userid,':day'=>$day,':calory'=>$calory,':foodid'=>$foodid];
-    $result = $update_stmt->execute($values);
-    
-    if(!$result){
-      $db_err = 'Failed to update';
-      $_SESSION['message'] = 'Submission unsuccessful';
-      $_SESSION['msg_type'] = 'danger';
-    } else{
-      $_SESSION['message'] = 'Successfully updated';
-      $_SESSION['msg_type'] = 'success';
-      header('location: home.php');
-    }
-    
-  }catch(Exception $er){
-    echo $er->getMessage();
-  }
-  } 
-}
 
 ?>
 
@@ -98,11 +35,11 @@ if(isset($_POST['update']) == 'POST'){
     <div>
       <div class="panel panel-primary">
         <div class="panel-heading">
-          <h3 class="panel-title">Foods</h3>
+          <h3 class="panel-title">Edit Food</h3>
         </div>
 
         <div class="panel-body">
-          <form method="POST" action="edit.php">
+          <form action="update.php" method="POST">
             <input type="hidden" name="foodid" value="<?php echo $row['foodid'] ?>">
             <div class="form-group">
               <label for="day">Day</label>
@@ -111,8 +48,8 @@ if(isset($_POST['update']) == 'POST'){
             </div>
             <div class="form-group">
               <label for="food-name">Food Name</label>
-              <input type="text" class="form-control" name="food-name" id="food-name"
-                value="<?php echo $row['food_name']; ?>" />
+              <input type="text" class="form-control" value="<?php echo $row['food_name']; ?>" name="food-name"
+                id="food-name" />
               <?php echo isset($food_err)?"<span class='text-danger'>{$food_err}</span>":"" ?>
             </div>
             <div class="form-group">
