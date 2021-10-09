@@ -1,0 +1,19 @@
+CREATE TABLE users(
+  userid INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+  username VARCHAR(255) NOT NULL,
+  email VARCHAR(255) NOT NULL,
+  password VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE foods(
+  foodid INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+  food_name VARCHAR(255) NOT NULL,
+  protein INT NOT NULL,
+  cabohydrates INT NOT NULL,
+  fat INT NOT NULL,
+  day DATE NOT NULL,
+  calory INT NOT NULL,
+  userid INT NOT NULL,
+  FOREIGN KEY(userid) REFERENCES users(userid)
+);
+

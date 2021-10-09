@@ -1,5 +1,5 @@
 <?php $currentPage = 'Home';?>
-<?php 
+<?php
 session_start();
 require_once 'includes/db.php';
 if(!isset($_SESSION['username'])){
@@ -7,7 +7,7 @@ if(!isset($_SESSION['username'])){
 }
 
 $result = $db->query("SELECT * FROM foods ORDER BY foodid DESC LIMIT 1");
-// print_r($result);
+
 
 
 ?>

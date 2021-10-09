@@ -68,5 +68,3 @@ if(isset($_POST['update']) == 'POST'){
   }
   }
 }
-
-// header('location: edit.php');
