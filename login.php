@@ -6,15 +6,12 @@ require_once 'includes/db.php';
 session_start();
 
 if(isset($_SESSION['username'])){
-  header('location: home.php');
+  header('location: index.php');
 } 
 
-if(isset($_POST['login']) === 'POST'){
-  $email = trim($_POST['email']);
-  $password = trim($_POST['password']);
-
-  $email = strip_tags($email);
-  $password = strip_tags($password);
+if(isset($_POST['login']) == 'POST'){
+  $email = trim(strip_tags($_POST['email']));
+  $password = trim(strip_tags($_POST['password']));
 
   if(empty($email)){
     $email_err = 'Email is required';
@@ -27,11 +24,11 @@ if(isset($_POST['login']) === 'POST'){
   }
 
   if(!isset($email_err) && !isset($password_err)){
-    $select_stmt = $db->prepare("SELECT * FROM users WHERE email=:email");
-    $select_stmt->execute([':email'=>$email]);
-    $row = $select_stmt->fetch(PDO::FETCH_ASSOC);
+    $stmt = $db->prepare("SELECT * FROM users WHERE email=:email");
+    $stmt->execute([':email'=>$email]);
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    if($select_stmt->rowCount() < 1){
+    if($stmt->rowCount() < 1){
       $user_err = 'User does not exist.  Please register';
     }
 
@@ -41,7 +38,7 @@ if(isset($_POST['login']) === 'POST'){
         $_SESSION['username'] = $row['username'];
         $_SESSION['message'] = 'You are successfully logged in';
         $_SESSION['msg_type'] = 'success';
-        header('location: add_food.php');
+        header('location:add_food.php');
       } else {
         $loggin_err = 'Your password and email do not match.';
         $_SESSION['message'] = 'Login failed. Try again';
@@ -78,7 +75,7 @@ if(isset($_POST['login']) === 'POST'){
           <form method="POST" action="login.php">
             <div class="form-group">
               <label for="email">Email</label>
-              <input type="email" class="form-control" id="email" name="email" placeholder="Email" />
+              <input type="email" class="form-control" id="email" name="email" placeholder="Email" autocomplete="off" />
               <?php echo isset($email_err)?"<span class='text-danger'>{$email_err}</span>":"" ?>
               <?php echo isset($user_err)?"<span class='text-danger'>{$user_err}</span>":"" ?>
               <?php echo isset($login_err)?"<span class='text-danger'>{$login_err}</span>":"" ?>

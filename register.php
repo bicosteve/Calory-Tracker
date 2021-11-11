@@ -6,7 +6,7 @@ require_once 'includes/db.php';
 session_start();
 
 if(isset($_SESSION['username'])){
-  header('location: home.php');
+  header('location: index.php');
 }
 
 if(isset($_POST['register']) == 'POST'){
