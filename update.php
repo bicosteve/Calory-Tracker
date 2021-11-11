@@ -5,11 +5,11 @@ session_start();
 require_once 'includes/db.php';
 
 if(isset($_POST['update']) == 'POST'){
-  $day = trim($_POST['day']);
-  $food_name = trim($_POST['food-name']);
-  $protein = (int) trim($_POST['protein']);
-  $carbohydrates = (int) trim($_POST['carbohydrates']);
-  $fat = (int) trim($_POST['fat']);
+  $day = trim(strip_tags($_POST['day']));
+  $food_name = trim(strip_tags($_POST['food-name']));
+  $protein = (int) trim(strip_tags($_POST['protein']));
+  $carbohydrates = (int) trim(strip_tags($_POST['carbohydrates']));
+  $fat = (int) trim(strip_tags($_POST['fat']));
   $userid = (int) $_SESSION['userid'];
   $foodid = (int) trim($_POST['foodid']);
   
@@ -38,6 +38,7 @@ if(isset($_POST['update']) == 'POST'){
 
    if(empty($fat)){
     $fat_err = 'This field is required';
+    //preg_match('/^[a-zA-Z]+$/',$firstname)
   } else if(!preg_match('/^[0-9]*$/',$fat)){
     $fat_err = 'This field only take digits';
   }

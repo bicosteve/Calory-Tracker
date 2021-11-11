@@ -9,9 +9,12 @@ if(isset($_SESSION['username'])){
   header('location: home.php');
 } 
 
-if(isset($_POST['login']) == 'POST'){
+if(isset($_POST['login']) === 'POST'){
   $email = trim($_POST['email']);
   $password = trim($_POST['password']);
+
+  $email = strip_tags($email);
+  $password = strip_tags($password);
 
   if(empty($email)){
     $email_err = 'Email is required';
@@ -35,12 +38,11 @@ if(isset($_POST['login']) == 'POST'){
 
     if(!isset($user_err)){
       if($email == $row['email'] && password_verify($password,$row['password'])){
-        // session_start();
         $_SESSION['userid'] = $row['userid'];
         $_SESSION['username'] = $row['username'];
         $_SESSION['message'] = 'You are successfully logged in';
         $_SESSION['msg_type'] = 'success';
-        header('refresh:0.5; add_food.php');
+        header('refresh:1; add_food.php');
       } else {
         $loggin_err = 'Your password and email do not match.';
         $_SESSION['message'] = 'Login failed. Try again';

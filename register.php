@@ -16,6 +16,12 @@ if(isset($_POST['register']) == 'POST'){
   $password = trim($_POST['password']);
   $password2 = trim($_POST['password2']);
 
+  //remove sql injections
+  $username = strip_tags($username);
+  $email = strip_tags($email);
+  $password = strip_tags($password);
+  $password2 = strip_tags($password2);
+
  
   if(empty($username)){
     $username_err ='Username is required';
@@ -47,7 +53,7 @@ if(isset($_POST['register']) == 'POST'){
       $select_stmt->execute(array(':email'=>$email));
       $row = $select_stmt->fetch(PDO::FETCH_ASSOC);
 
-      if($row['email'] == $email){
+      if($row){
         $register_err = "The user already exists";
       }
 
@@ -58,7 +64,7 @@ if(isset($_POST['register']) == 'POST'){
         $result = $insert_stmt->execute($values);
         $_SESSION['message'] = 'Successfully registered.';
         $_SESSION['msg_type'] = 'success';
-        header('refresh:2; login.php'); 
+        header('refresh:1; login.php'); 
       } else {
         $_SESSION['message'] = 'Registeration failed. Try again';
         $_SESSION['msg_type'] = 'warning';
