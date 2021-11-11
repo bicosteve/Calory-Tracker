@@ -64,7 +64,7 @@ if(isset($_POST['register']) == 'POST'){
         $result = $insert_stmt->execute($values);
         $_SESSION['message'] = 'Successfully registered.';
         $_SESSION['msg_type'] = 'success';
-        header('refresh:1; login.php'); 
+        header('location: login.php'); 
       } else {
         $_SESSION['message'] = 'Registeration failed. Try again';
         $_SESSION['msg_type'] = 'warning';
