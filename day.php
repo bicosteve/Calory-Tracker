@@ -46,6 +46,7 @@ if(isset($_POST['search']) == 'POST'){
             <div class="form-group">
               <label for="day">Select Date</label>
               <select name="day" id="day" class="form-control">
+                <option value="">--Please select a date to filter--</option>
                 <?php while($row = $results->fetch(PDO::FETCH_ASSOC)): ?>
                 <option value="<?php echo $row['day']; ?>"><?php echo $row['day'];  ?></option>
                 <?php endwhile; ?>

@@ -64,7 +64,7 @@ if(isset($_POST['add_food']) == 'POST'){
       } else{
         $_SESSION['message'] = 'Successfully submited';
         $_SESSION['msg_type'] = 'success';
-        header('refresh:1; home.php');
+        header('refresh:1; index.php');
       }
       
     }catch(Exception $er){

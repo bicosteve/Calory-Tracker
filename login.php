@@ -28,8 +28,7 @@ if(isset($_POST['login']) === 'POST'){
 
   if(!isset($email_err) && !isset($password_err)){
     $select_stmt = $db->prepare("SELECT * FROM users WHERE email=:email");
-    $values = [':email'=>$email];
-    $select_stmt->execute($values);
+    $select_stmt->execute([':email'=>$email]);
     $row = $select_stmt->fetch(PDO::FETCH_ASSOC);
 
     if($select_stmt->rowCount() < 1){

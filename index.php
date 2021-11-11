@@ -6,7 +6,7 @@ if(!isset($_SESSION['username'])){
   header('location: login.php');
 }
 
-$result = $db->query("SELECT * FROM foods ORDER BY foodid DESC LIMIT 1");
+$result = $db->query("SELECT * FROM foods ORDER BY foodid DESC");
 
 
 

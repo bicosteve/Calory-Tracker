@@ -60,7 +60,7 @@ if(isset($_POST['update']) == 'POST'){
     } else{
       $_SESSION['message'] = 'Successfully updated';
       $_SESSION['msg_type'] = 'success';
-      header('location: home.php');
+      header('location: index.php');
       exit();
     }
     
