@@ -6,9 +6,12 @@ if(!isset($_SESSION['username'])){
   header('location: login.php');
 }
 
-$result = $db->query("SELECT * FROM foods ORDER BY foodid DESC");
+$userid = $_SESSION['userid'];
 
-
+$stmt = $db->prepare("SELECT * FROM foods WHERE userid = :userid ORDER BY foodid DESC");
+$stmt->bindParam('userid',$userid);
+$stmt->execute();
+$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 ?>
 
@@ -18,8 +21,10 @@ $result = $db->query("SELECT * FROM foods ORDER BY foodid DESC");
     <div>
       <div class="page-header"></div>
 
+      <?php if($stmt->rowCount() > 0): ?>
+        
       <div class="panel panel-primary">
-        <?php while($row = $result->fetch(PDO::FETCH_ASSOC)): ?>
+        <?php foreach($result as $row): ?>
         <div class="panel-heading">
           <h3 class="panel-title"><?php echo $row['day']; ?></h3>
         </div>
@@ -42,8 +47,14 @@ $result = $db->query("SELECT * FROM foods ORDER BY foodid DESC");
             </li>
           </ul>
         </div>
-        <?php endwhile; ?>
+        <?php endforeach; ?>
       </div>
+    <?php else: ?>
+
+      <p style="text-align:center;">You have not tracked your food consumption.</p>
+
+    <?php endif; ?>
+
     </div>
   </div>
 </div>

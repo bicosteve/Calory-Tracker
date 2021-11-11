@@ -14,7 +14,7 @@ $foodNumber = 0;
 
 if(isset($_POST['search']) == 'POST'){
   $day = trim($_POST['day']);
-  $foods = $db->query("SELECT * FROM foods WHERE day='$day'");
+  $foods = $db->query("SELECT * FROM foods WHERE day='$day' AND userid='$userid'");
   
   //sub totals
   $totals = $db->query("SELECT SUM(calory) AS cals, SUM(protein) AS proteins, SUM(cabohydrates) AS cabs, SUM(fat) AS fats FROM foods WHERE day='$day'"); 
