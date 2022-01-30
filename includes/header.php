@@ -24,24 +24,24 @@
       </div>
       <div id="navbar" class="navbar-collapse collapse">
         <ul class="nav navbar-nav mr-auto">
-          <?php if(isset($_SESSION['username'])): ?>
-          <li><a href="index.php">Home</a></li>
-          <li class="">
-            <a href="add_food.php">Add Food Item</a>
-          </li>
+          <?php if (isset($_SESSION['username'])) : ?>
+            <li><a href="index.php">Home</a></li>
+            <li class="">
+              <a href="add_food.php">Add Food Item</a>
+            </li>
           <?php endif; ?>
         </ul>
         <ul class="nav navbar-nav navbar-right">
-          <?php if(isset($_SESSION['username'])): ?>
-          <?php
-             $name = $_SESSION['username'];
-             $name = ucfirst($name);
-             ?>
-          <li class="nav-item active"><a href="#"><?php echo "Hi, ".$name; ?></a></li>
-          <li class="nav-item"><a href="logout.php">Logout</a></li>
-          <?php else: ?>
-          <li class="nav-item"><a href="login.php">Login</a></li>
-          <li class="nav-item"><a href="register.php">Register</a></li>
+          <?php if (isset($_SESSION['username'])) : ?>
+            <?php
+            $name = $_SESSION['username'];
+            $name = ucfirst($name);
+            ?>
+            <li class="nav-item active"><a href="#"><?php echo "Hi, " . $name; ?></a></li>
+            <li class="nav-item"><a href="logout.php">Logout</a></li>
+          <?php else : ?>
+            <li class="nav-item"><a href="login.php">Login</a></li>
+            <li class="nav-item"><a href="register.php">Register</a></li>
           <?php endif; ?>
         </ul>
       </div>
